@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class LogExecutionTimeAspect {
 
-    @Around("@annotation(com.example.inventorymanagementamazon.annotation.LogExecutionTime)")
+    @Around("@annotation(com.ticketbookingsys.metro.annotation.LogExecutionTime)")
     public Object afterMethodExecution(final ProceedingJoinPoint proceedingJoinPoint) throws Throwable{
         final long start = System.currentTimeMillis();
         final Object proceed = proceedingJoinPoint.proceed();
