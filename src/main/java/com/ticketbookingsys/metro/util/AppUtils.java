@@ -16,9 +16,9 @@ public class AppUtils {
 
     private final StationRepository stationRepository;
     public  Station findStation(String stationName) throws NotFoundException {
-        Optional<Station> sourceStation = stationRepository.findOne(Example.of(Station.builder()
+        Optional<Station> station = stationRepository.findOne(Example.of(Station.builder()
                 .name(stationName)
                 .build()));
-        return sourceStation.orElseThrow(() -> new NotFoundException(stationName +" station does not exist"));
+        return station.orElseThrow(() -> new NotFoundException(stationName +" station does not exist"));
     }
 }

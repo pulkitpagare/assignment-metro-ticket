@@ -19,4 +19,6 @@ public class Ticket {
     private String destination;
     private Long price;
     private LocalDateTime localDateTime;
+    private boolean isEntry;
+    private boolean isExit;
 }
