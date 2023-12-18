@@ -2,48 +2,40 @@ package com.ticketbookingsys.metro.rest;
 
 import com.ticketbookingsys.metro.annotation.LogExecutionTime;
 import com.ticketbookingsys.metro.entity.Station;
-import com.ticketbookingsys.metro.exception.NotFoundException;
-import com.ticketbookingsys.metro.repository.StationRepository;
 import com.ticketbookingsys.metro.request.CreateStationRequest;
+import com.ticketbookingsys.metro.service.StationService;
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Example;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/stations")
-@Slf4j
 public class StationController {
 
-    private final StationRepository stationRepository;
+    private final StationService stationService;
 
-    @GetMapping
-    public ResponseEntity<List<Station>> getAllStations(){
-        return ResponseEntity.ok().body(stationRepository.findAll());
-    }
     @PostMapping
     @LogExecutionTime
-    public ResponseEntity<Station> addStation(@RequestBody @Valid CreateStationRequest createStationRequest){
-        Station station = Station.builder()
-                .name(createStationRequest.getStationName())
-                .price(createStationRequest.getPrice())
-                .build();
-        return ResponseEntity.ok().body(stationRepository.save(station));
+    public ResponseEntity<Station> addStation(@RequestBody @Valid CreateStationRequest createStationRequest) {
+        return ResponseEntity.ok().body(stationService.addStation(createStationRequest));
     }
+
+    @GetMapping
+    @LogExecutionTime
+    public ResponseEntity<List<Station>> getAllStation() {
+        return ResponseEntity.ok().body(stationService.getAllStations());
+    }
+
     @DeleteMapping("/{stationName}")
-    public void deleteStation(@PathVariable(name = "stationName") String stationName) throws Exception{
-        Optional<Station> station = stationRepository.findOne(Example.of(Station.builder()
-                .name(stationName)
-                .build()));
-        station.ifPresentOrElse(stationRepository::delete, () -> {
-            throw new NotFoundException("station does not exist");
-        });
+    @LogExecutionTime
+    public void deleteStation(@PathVariable(name = "stationName") String stationName) throws Exception {
+        stationService.deleteStation(stationName);
     }
+
 }
