@@ -10,7 +10,10 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class LogExecutionTimeAspect {
-
+/*
+* TODO : create a similar kind of annotation for logging methods enter , exits with their params and response.
+*  refer this link : https://medium.com/@toimrank/spring-boot-aop-with-example-a2757e389d0b
+* */
     @Around("@annotation(com.ticketbookingsys.metro.annotation.LogExecutionTime)")
     public Object afterMethodExecution(final ProceedingJoinPoint proceedingJoinPoint) throws Throwable{
         final long start = System.currentTimeMillis();
