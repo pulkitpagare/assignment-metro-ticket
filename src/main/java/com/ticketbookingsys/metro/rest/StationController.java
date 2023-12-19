@@ -1,6 +1,8 @@
 package com.ticketbookingsys.metro.rest;
 
+import com.ticketbookingsys.metro.annotation.CustomLogExecution;
 import com.ticketbookingsys.metro.annotation.LogExecutionTime;
+import com.ticketbookingsys.metro.annotation.StationValidation;
 import com.ticketbookingsys.metro.entity.Station;
 import com.ticketbookingsys.metro.request.CreateStationRequest;
 import com.ticketbookingsys.metro.service.StationService;
@@ -22,18 +24,22 @@ public class StationController {
 
     @PostMapping
     @LogExecutionTime
+    @StationValidation
+    @CustomLogExecution
     public ResponseEntity<Station> addStation(@RequestBody @Valid CreateStationRequest createStationRequest) {
         return ResponseEntity.ok().body(stationService.addStation(createStationRequest));
     }
 
     @GetMapping
     @LogExecutionTime
+    @CustomLogExecution
     public ResponseEntity<List<Station>> getAllStation() {
         return ResponseEntity.ok().body(stationService.getAllStations());
     }
 
     @DeleteMapping("/{stationName}")
     @LogExecutionTime
+    @CustomLogExecution
     public void deleteStation(@PathVariable(name = "stationName") String stationName) throws Exception {
         stationService.deleteStation(stationName);
     }

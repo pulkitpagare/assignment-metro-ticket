@@ -14,4 +14,5 @@ public class Station {
     private String id;
     private String name;
     private Long price;
+    private STATION_TYPE stationType;
 }

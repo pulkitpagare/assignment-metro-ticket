@@ -25,6 +25,7 @@ public class StationService {
         Station station = Station.builder()
                 .name(createStationRequest.getStationName())
                 .price(createStationRequest.getPrice())
+                .stationType(createStationRequest.getStationType())
                 .build();
         return stationRepository.save(station);
     }
