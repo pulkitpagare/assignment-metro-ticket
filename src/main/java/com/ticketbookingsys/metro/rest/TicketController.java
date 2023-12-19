@@ -1,6 +1,7 @@
 package com.ticketbookingsys.metro.rest;
 
 import com.ticketbookingsys.metro.annotation.LogExecutionTime;
+import com.ticketbookingsys.metro.annotation.MyAnnotation;
 import com.ticketbookingsys.metro.entity.Ticket;
 import com.ticketbookingsys.metro.exception.NotFoundException;
 import com.ticketbookingsys.metro.request.CreateTicketRequest;
@@ -20,14 +21,15 @@ public class TicketController {
 
     private final TicketService ticketService;
 
-    @LogExecutionTime
+//    @LogExecutionTime
+    @MyAnnotation
     @PostMapping("/buyTicket")
     public ResponseEntity<Ticket> buyTickets(@RequestBody @Valid CreateTicketRequest createTicketRequest) throws NotFoundException {
         return ResponseEntity.ok().body(ticketService.generateTicket(createTicketRequest));
     }
 
-    @GetMapping("/{ticketId}")
-    public ResponseEntity<Ticket> getTicketDetails(@PathVariable(name = "ticketId") String ticketId) throws NotFoundException {
+    @GetMapping("/{ticketId}/{id}")
+    public ResponseEntity<Ticket> getTicketDetails(@PathVariable(name = "ticketId") String ticketId, @PathVariable(name = "id") int Id) throws NotFoundException {
         return ResponseEntity.ok().body(ticketService.getTicketDetails(ticketId));
     }
 

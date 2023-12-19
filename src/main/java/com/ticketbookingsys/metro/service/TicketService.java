@@ -30,7 +30,7 @@ public class TicketService {
         return ticket.orElseThrow(() -> new  NotFoundException("Ticket Id " + ticketId + " doesn't exist!!!"));
     }
 
-    @LogExecutionTime
+//    @LogExecutionTime
     public Ticket generateTicket(CreateTicketRequest createTicketRequest) throws NotFoundException {
         Station sourceStation = appUtils.findStation(createTicketRequest.getSource());
         Station destinationStation = appUtils.findStation(createTicketRequest.getDestination());
