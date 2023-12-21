@@ -1,5 +1,6 @@
 package com.ticketbookingsys.metro.aspect;
 
+import com.ticketbookingsys.metro.entity.Type;
 import com.ticketbookingsys.metro.request.CreateStationRequest;
 import lombok.Lombok;
 import lombok.extern.slf4j.Slf4j;
@@ -40,11 +41,18 @@ public class LogAspect {
 //    @Around("@annotation(com.ticketbookingsys.metro.annotation.EnumValidationAnnotation)") will do it using annotation too and push it
     @Around(value = "execution(* com.ticketbookingsys.metro.rest.StationController.addStation(..)) && args(body)")
     public Object beforeAddingStation(ProceedingJoinPoint proceedingJoinPoint , CreateStationRequest body) throws Throwable {
-        if(((body.getStationType().equals("LUX") ||body.getStationType().equals("SEMI_LUX")) && body.getPrice() >=20 )
-        || (body.getStationType().equals("NON_LUX") && body.getPrice() <=50)
-        ){
-            return proceedingJoinPoint.proceed();
+
+        if(body.getStationType().equals(Type.LUX) || body.getStationType().equals(Type.SEMI_LUX) || body.getStationType().equals(Type.NON_LUX)){
+            if(((body.getStationType().equals(Type.LUX) ||body.getStationType().equals(Type.SEMI_LUX)) && body.getPrice() >=20 )
+                    || (body.getStationType().equals(Type.NON_LUX) && body.getPrice() <=50)
+            ){
+                return proceedingJoinPoint.proceed();
+            }else{
+                throw new Exception("please enter correct amount");
+            }
+        }else{
+            throw new Exception("please enter correct station type");
         }
-        return null;
+
     }
 }
