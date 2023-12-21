@@ -3,12 +3,12 @@ package com.ticketbookingsys.metro.aspect;
 import com.ticketbookingsys.metro.entity.STATION_TYPE;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 
 @Slf4j
 @Aspect
@@ -25,14 +25,20 @@ public class StationValidationAspect {
     @Before(value = "@annotation(com.ticketbookingsys.metro.annotation.StationValidation)")
     public void beforeAdvice(JoinPoint joinPoint) throws Throwable {
         Object[] args = joinPoint.getArgs();
-        for (Object object : args) {
+        Arrays.stream(args).forEach(object -> {
             if (object != null) {
                 STATION_TYPE stationType = null;
                 Long price = null;
-                for (Field field : object.getClass().getDeclaredFields()) {
+                Field[] fields =  object.getClass().getDeclaredFields();
+                for (Field field : fields) {
                     field.setAccessible(true);
                     String fieldName = field.getName();
-                    Object fieldValue = field.get(object);
+                    Object fieldValue = null;
+                    try {
+                        fieldValue = field.get(object);
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
                     switch (fieldName) {
                         case "price" -> price = (Long) fieldValue;
                         case "stationType" -> stationType = (STATION_TYPE) fieldValue;
@@ -46,7 +52,7 @@ public class StationValidationAspect {
                     if(price < 50) throw new Error("For " + stationType + " Station, the price should be at least 50.");
                 }
             }
-        }
+        });
     }
 
 }
