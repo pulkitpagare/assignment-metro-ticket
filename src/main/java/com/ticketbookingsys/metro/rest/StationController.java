@@ -1,5 +1,6 @@
 package com.ticketbookingsys.metro.rest;
 
+import com.ticketbookingsys.metro.annotation.EnumValidationAnnotation;
 import com.ticketbookingsys.metro.annotation.LogExecutionTime;
 import com.ticketbookingsys.metro.entity.Station;
 import com.ticketbookingsys.metro.exception.NotFoundException;
@@ -29,11 +30,13 @@ public class StationController {
         return ResponseEntity.ok().body(stationRepository.findAll());
     }
     @PostMapping
-    @LogExecutionTime
+//    @LogExecutionTime
+    @EnumValidationAnnotation
     public ResponseEntity<Station> addStation(@RequestBody @Valid CreateStationRequest createStationRequest){
         Station station = Station.builder()
                 .name(createStationRequest.getStationName())
                 .price(createStationRequest.getPrice())
+                .type(createStationRequest.getStationType())
                 .build();
         return ResponseEntity.ok().body(stationRepository.save(station));
     }
