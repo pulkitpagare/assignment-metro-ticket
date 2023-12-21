@@ -1,5 +1,6 @@
 package com.ticketbookingsys.metro.rest;
 
+import com.ticketbookingsys.metro.annotation.CustomLogExecution;
 import com.ticketbookingsys.metro.annotation.LogExecutionTime;
 import com.ticketbookingsys.metro.entity.Ticket;
 import com.ticketbookingsys.metro.exception.NotFoundException;
@@ -21,17 +22,21 @@ public class TicketController {
     private final TicketService ticketService;
 
     @LogExecutionTime
+    @CustomLogExecution
     @PostMapping("/buyTicket")
     public ResponseEntity<Ticket> buyTickets(@RequestBody @Valid CreateTicketRequest createTicketRequest) throws NotFoundException {
         return ResponseEntity.ok().body(ticketService.generateTicket(createTicketRequest));
     }
 
+    @LogExecutionTime
+    @CustomLogExecution
     @GetMapping("/{ticketId}")
     public ResponseEntity<Ticket> getTicketDetails(@PathVariable(name = "ticketId") String ticketId) throws NotFoundException {
         return ResponseEntity.ok().body(ticketService.getTicketDetails(ticketId));
     }
 
     @LogExecutionTime
+    @CustomLogExecution
     @PatchMapping("/updateEntry/{ticketId}")
     public void updateEntry(@PathVariable(name = "ticketId") String ticketId) throws Exception {
         log.info("inside {} controller", StationController.class);
@@ -39,6 +44,7 @@ public class TicketController {
     }
 
     @LogExecutionTime
+    @CustomLogExecution
     @PatchMapping("/updateExit/{ticketId}")
     public void updateExit(@PathVariable(name = "ticketId") String ticketId) throws Exception {
         log.info("inside {} controller", StationController.class);
