@@ -18,10 +18,16 @@ public class CreateStationRequest {
     *  if stationType are of this category (LUX, SEMI-LUX) then price should be minimum 20
     *   if stationType are of this category (NON-LUX) then price should be maximum 50
     * */
+
+    @NotBlank(message = "station type must not null")
+    private String stationType;
+
     @NotBlank(message = "station name must not null")
     private String stationName;
 
     @Positive(message = "price should be positive number")
     private Long price;
+
+
 
 }
